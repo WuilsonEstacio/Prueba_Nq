@@ -15,16 +15,7 @@ Este documento describe el proceso seguido para **explorar** los datos, **identi
    - [Hipótesis preliminares](#hipótesis-preliminares)  
 5. [Flujo Modelo Analítico](#Flujo-Modelo-Analítico)  
    - [Data flow](#fData_flow)
-   - [Criterio de Selección del Modelo Analítico](#criterio-de-selección-del-modelo-analítico)
-   - [Lógica de Fraccionamiento](#lógica-de-fraccionamiento) -
-   - [Frecuencia de Actualización](#frecuencia-de-actualización)
-6. [Resultados](#resultados)
-   - [Distribución global de transacciones](#1-distribución-global-de-transacciones)
-   - [Densidad de montos promedios](#2-densidad-de-montos-promedios)
-   - [Transacciones fraccionadas por dia de la semana](#3-transacciones-fraccionadas-por-día-de-la-semana)
-   - [Heatmap dia vs hora transacciones fraccionadas](#4-heatmap-día-vs-hora-transacciones-fraccionadas)
-   - [Porcentaje de transacciones fraccionadas por tipo](#5-porcentaje-de-transacciones-fraccionadas-por-tipo)
-   - [Top 10 usuarios con mas transacciones fraccionadas](#6-top-10-usuarios-con-más-transacciones-fraccionadas)
+6. [Seleccion de modelo](#Seleccion-del-modelo)
 7. [Conclusiones](#conclusiones)
    - [Implementación](#1-implementación)
    - [Trazabilidad](#2-trazabilidad)
@@ -164,7 +155,7 @@ En esta parte se trabajo con el 60% de una de las bases, que reprecentan un **6.
 ┌─────────────────────────────────────────────────────────────┐
 │5. SALIDA                                                    │
 │   - Almacenamiento de resultados (CSV, Base de datos, etc.) │
-│   - Consumir los resultados en dashboards                   │
+│                                                             │
 └─────────────────────────────────────────────────────────────┘
           │
           ▼
@@ -175,3 +166,115 @@ En esta parte se trabajo con el 60% de una de las bases, que reprecentan un **6.
 ### Flujo Modelo Analitico
 
 ![Flujo Modelo Analítico](./imagenes/flujo.png "Flujo Modelo Analitico")
+
+### Seleccion de modelo
+ El modelo analitico me tiene que identificar si hay n transacciones en el dia en una ventana de tiempo de 24 horas
+
+```python
+# Asegúrate de que la columna transaction_date esté en formato timestamp
+dfu = dfu.withColumn("transaction_time", to_timestamp(col("transaction_date"), "yyyy-MM-dd HH:mm:ss"))
+dfu = dfu.orderBy("user_id", "transaction_time")
+```
+#### Calculo de las ventanas de tiempo y diferencia en horas entre transaciones
+```python
+# === 1) Definir la columna 'day' ===
+dfu = dfu.withColumn("day", to_date(col("transaction_time")))
+
+# === 2) Detectar cambio de día con lag(day) ===
+# Ventana principal: particionamos por user_id y ordenamos por transaction_time
+w_user_order = Window.partitionBy("user_id").orderBy("transaction_time")
+
+dfu = dfu.withColumn(
+    "prev_day",
+    lag("day").over(w_user_order)
+)
+
+# Creamos una bandera day_change que es 1 cuando cambia el día, 0 si es el mismo día
+dfu = dfu.withColumn(
+    "day_change_flag",
+    when(col("prev_day").isNull(), 0)  # primera transacción => no cambia día
+    .when(col("day") != col("prev_day"), 1)
+    .otherwise(0)
+)
+
+# === 3) day_group: identificador acumulado de cada día, por usuario ===
+# Sumar en forma acumulada la bandera day_change_flag
+dfu = dfu.withColumn(
+    "day_group",
+    _sum("day_change_flag").over(w_user_order)
+)
+# Así, cada vez que day_change_flag = 1, se incrementa day_group en 1
+
+# --- Limpieza opcional ---
+dfu = dfu.drop("prev_day", "day_change_flag")
+
+# === 4) Calcular diff_hours dentro de cada día_group ===
+#  (1) Definir ventana que particiona por user_id y day_group, ordena por fecha/hora
+w_user_day = Window.partitionBy("user_id", "day_group").orderBy("transaction_time")
+
+# (2) Calcular la transacción anterior dentro del mismo day_group
+dfu = dfu.withColumn(
+    "prev_tr_time_tmp",
+    lag("transaction_time").over(w_user_day)
+)
+
+# (3) Si es la primera transacción del day_group, prev_tr_time_tmp estará en null
+#     Asignamos la transaction_time actual para que diff_hours = 0 en esa fila
+dfu = dfu.withColumn(
+    "prev_tr_time",
+    when(col("prev_tr_time_tmp").isNull(), col("transaction_time"))
+    .otherwise(col("prev_tr_time_tmp"))
+)
+dfu = dfu.drop("prev_tr_time_tmp")
+
+# (4) Calcular diff_hours
+dfu = dfu.withColumn(
+    "diff_hours",
+    (unix_timestamp("transaction_time") - unix_timestamp("prev_tr_time")) / 3600
+)
+
+dfu = dfu.withColumn(
+    "diff_minutes",
+    (unix_timestamp("transaction_time") - unix_timestamp("prev_tr_time")) / 60
+)
+
+# === 5) new_window_flag: si diff_hours > 24, se abre una nueva ventana ===
+dfu = dfu.withColumn(
+    "new_window_flag",
+    when(col("diff_hours") > 24, 1).otherwise(0)
+)
+
+# === 6) Calcular windows_time dentro de cada day_group ===
+#     - sumamos en forma acumulada new_window_flag y le sumamos 1 para iniciar en 1
+dfu = dfu.withColumn(
+    "windows_time",
+    _sum("new_window_flag").over(w_user_day) + 1
+)
+
+# (Opcional) limpiar columnas
+dfu = dfu.drop("new_window_flag","windows_time")
+dfu = dfu.withColumnRenamed("day_group", "windows_time")
+# Ajustar la columna "day_group" para que inicie en 1
+dfu = dfu.withColumn("windows_time", col("windows_time") + 1)
+# dfu.show(truncate=False)
+dfu = dfu.withColumn("diff_hours", round(col("diff_hours"), 2))
+dfu = dfu.withColumn("diff_minutes", round(col("diff_minutes"), 2))
+```
+### Identificacion de usuarios que tienen  mas de dos transaciones en un solo dia
+```python
+# Agrupar por 'user_id' y 'windows_time', contar los 'windows_time' y sumar 'transaction_amount'
+df_count = dfu.groupBy("user_id", "windows_time") \
+    .agg(
+        F.count("windows_time").alias("windows_time_count"),
+        F.sum("transaction_amount").alias("total_transaction_amount"),
+        F.avg("diff_hours").alias("avg_diff_hours")  # Promedio de diff_hours
+    )
+# Filtrar aquellos 'user_id' donde el conteo de 'windows_time' sea mayor a 2
+df_filtered = df_count.filter(F.col("windows_time_count") > 2)
+# Ordenar por total_transaction_amount de mayor a menor
+df_filtered = df_filtered.orderBy(F.col("total_transaction_amount").desc())
+# Mostrar el resultado
+print('# Usuarios unicos que estan haciendo Fraccionamiento transaccional',df_filtered.select("user_id").distinct().count())
+df_filtered.show(truncate=False)
+```
+### Esta parte hasta aqui me genera los clientes que tienen mas de 2 transaciones en un corte de 24 horas desde que realizo la primera transaccion en ese dia
