@@ -146,7 +146,7 @@ En esta parte se trabajo con el 60% de una de las bases, que reprecentan un **6.
 │   - Cálculo de montos promedios                                │
 │   - identificacion de usuarios con mas de 2 transacciones      |
 |                     en menos de 24 horas                       |
-|   - Comportamiento de variables para esos clientes              │
+|   - Comportamiento de variables para esos clientes             │
 └────────────────────────────────────────────────────────────────┘
           │
           ▼
@@ -157,8 +157,9 @@ En esta parte se trabajo con el 60% de una de las bases, que reprecentan un **6.
           │
           ▼
 ┌─────────────────────────────────────────────────────────────┐
-│6 . Carga de datos nuevamente a la nube                      │
-│   - mediante Azure o AWS                                     │
+│6 . Carga de datos nuevamente a la nube                      |
+|    para disponibilidad del usuario,                         │
+│   - mediante Azure o AWS                                    │
 └─────────────────────────────────────────────────────────────┘
           │
           ▼
