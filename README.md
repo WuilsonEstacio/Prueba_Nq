@@ -19,10 +19,6 @@ Este documento describe el proceso seguido para **explorar** los datos, **identi
    - [Frecuencia de actualizacion](#Frecuencia-de-actualizacion)
 8. [Graficas](#Graficas)
 9. [Conclusiones](#conclusiones)
-   - [Implementación](#1-implementación)
-   - [Trazabilidad](#2-trazabilidad)
-   - [Monitoreo](#3-monitoreo)
-   - [Próximos pasos](#4-próximos-pasos)
 
 ---
 
@@ -310,3 +306,11 @@ y para la grafica de Distribution of diff days tenemos que el area bajo la curva
 ### Grafica ejemplo fraccionamiento transacional 
 #### Esta grafica nos muestra un ejemplo de un usuario con una mala practica transacional, donde por ejemplo el usuario el dia 2021-02-05 realiza 13 transaciones que se muestran como 1 en la columna windows_time, tambien se muestra la diferencia de tiemo entre las transacciones y el monto de cada una de las transacciones, y de esas se muestra que todas son de tipo credit.
 ![Graficas](./imagenes/ejfrancionamiento.png "ejfrancionamiento")
+
+---
+## Conclusiones
+* La frecuencia en la cual se debería ejecutar el modelo para ir viendo que clientes sobre pasan las 3 transferencias debería ser hora a hora, dado que el análisis anterior me indica que, para las transacciones totales menores a 3000 dólares, el tiempo promedio entre transacciones es de 44.32 minutos. y que el 50% de estas transacciones se realizaron con una diferencia de tiempo entre ellas menor a 5.79 minutos y para las transacciones totales mayores e iguales a 3000 dólares, el tiempo promedio entre transacciones es de 13.67 minutos. y que el 50% de estas transacciones se realizaron con una diferencia de tiempo entre ellas menor a 1.47 minutos., en este caso podemos usar mejor Azure Synapse, dado que es muy conveniente para analizar y manejar información en tiempo real de macrodatos dado que esta herramienta maneja lo mejor de SQL y Spark e integración de ETL.
+* Se determina que la probabilidad de que un usuario realice 3 o mas transacciones es baja en este caso es del 1.25%
+* Se observa que general mente el tipo de Transacción más frecuentada es la tipo Debito. pero si la  fracionamos es  el tipo de mercahnt como muestra la grafica top merchat vemos que para los dos primeros grupos de merchan el tipo de transacción mas frecuentada es la Crédito.
+
+
