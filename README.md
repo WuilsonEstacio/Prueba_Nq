@@ -172,5 +172,6 @@ En esta parte se trabajo con el 60% de una de las bases, que reprecentan un **6.
 │  FIN DEL PROCESO  │
 └───────────────────┘
 ```
+### Flujo Modelo Analitico
 
-![Data flow](./imagenes/flujo.png "Flujo Proceso")
+![Flujo Modelo Analítico](./imagenes/flujo.png "Flujo Modelo Analitico")
