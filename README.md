@@ -296,3 +296,9 @@ Dado los hallazgos la frecuencia de actualizacion que se propone debe ser diaria
 ### Grafica top merchant 
 #### Esto nos muestra que el codigo unico del comercio o aliado que mas realiza transaciones es el **'817d18cd3c31e40e9bff0566baae7758'** y dentro de sus tipos de transaccion la mas frecuentada es la  tipo debito, tal como muestra la siguiente imagen
 ![Graficas](./imagenes/merchant2.png "merchant2")
+
+### Grafica daily_transaction y Distribucion por dias
+#### Estas dos graficas nos muestra que los usuarios mayormente realizan entre una o dos transacciones,
+y para la grafica de Distribution of diff days tenemos que el area bajo la curva (AUC) es de 0.758, lo cual nos indica que hay una probabilidad de 0.758 de que una persona haga una tranasacion en aproximadamente 40 dias y que si hace una ese dia hay una probabilidad de un 5.78% de que realice una segunda transaccion y de que realice 3 o mas transacciones en un dia la probabilida es de 1.25% 
+![Graficas](./imagenes/daily_transaction2.png "daily_transaction2")
+![Graficas](./imagenes/daily_transaction.png "daily_transaction")
