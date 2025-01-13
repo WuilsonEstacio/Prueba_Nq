@@ -16,7 +16,7 @@ Este documento describe el proceso seguido para **explorar** los datos, **identi
 6. [Flujo Modelo Analítico](#Flujo-Modelo-Analítico)  
    - [Data flow](#Data-flow)
 7. [Seleccion modelo](#Seleccion-modelo)
-   -[Frecuencia de actualizacion](#Frecuencia-de-actualizacion)
+   - [Frecuencia de actualizacion](#Frecuencia-de-actualizacion)
 9. [Conclusiones](#conclusiones)
    - [Implementación](#1-implementación)
    - [Trazabilidad](#2-trazabilidad)
