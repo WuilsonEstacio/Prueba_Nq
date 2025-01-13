@@ -1,0 +1,9 @@
+Buenos días nequi:
+envió estructura:
+
+en la carpeta Data, se descarga la data de los archivos con el código que esta en la carpeta Scrips
+
+en la carpeta Documentación encontraras un Diccionario de variables, Documentación del código,
+Flujo Prueba Nequi y documentación de la prueba.
+
+En la carpeta Scrips, encontrara dos códigos, uno de EDA llamado Nequi_EDA_data_f y Otro del modelo llamado Nequi_Modelo_data, este ultimo contiene solo lo necesario para seleccionar los clientes que va teniendo mas de 3 transaciones por dia.
