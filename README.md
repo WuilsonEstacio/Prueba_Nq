@@ -284,7 +284,7 @@ df_filtered.show(truncate=False)
 ---
 
 ---
-## Frecuencia de Actualización
+### Frecuencia de Actualización
 Dado los hallazgos la frecuencia de actualizacion que se propone debe ser diariamente y hora a hora, esto para poder determinar rapidamente quien esta iniciando a realizar fraccionamiento transaccional.  Como alternativa rapida se suguiere trabajar con Azure Synapses  dado que este es un servicio de analisis empresarial que acelera el tiempo para la optencion de informacion en tiempo real a demas de que  reune lo mejor de las tecnologias de SQL y de Spark.
 
 ---
