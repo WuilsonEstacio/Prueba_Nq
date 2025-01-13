@@ -152,8 +152,13 @@ En esta parte se trabajo con el 60% de una de las bases, que reprecentan un **6.
           ▼
 ┌─────────────────────────────────────────────────────────────┐
 │5. SALIDA                                                    │
-│   - Almacenamiento de resultados (CSV, Base de datos, etc.) │
-│                                                             │
+│   - Almacenamiento de resultados (parquet, DBs, etc.)       │
+└─────────────────────────────────────────────────────────────┘
+          │
+          ▼
+┌─────────────────────────────────────────────────────────────┐
+│6 . Carga de datos nuevamente a la nube                      │
+│   - mediante Azure o AWS                                     │
 └─────────────────────────────────────────────────────────────┘
           │
           ▼
