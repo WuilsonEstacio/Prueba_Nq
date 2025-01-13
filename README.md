@@ -167,6 +167,8 @@ En esta parte se trabajo con el 60% de una de las bases, que reprecentan un **6.
 
 ![Flujo Modelo Analítico](./imagenes/flujo.png "Flujo Modelo Analitico")
 
+---
+
 ## Seleccion de modelo
  El modelo analitico me tiene que identificar si hay n transacciones en el dia en una ventana de tiempo de 24 horas
 
