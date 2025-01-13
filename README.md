@@ -106,8 +106,7 @@ En esta parte se trabajo con el 60% de una de las bases, que reprecentan un **6.
 ### Data flow
 ```plaintext
 ┌─────────────────────────────────────┐
-│  Pasos para un desarrollo efectivo  │ 
-│                                     |    
+│  Pasos para un desarrollo efectivo  │    
 └─────────────────────────────────────┘
           │
           ▼
@@ -143,16 +142,22 @@ En esta parte se trabajo con el 60% de una de las bases, que reprecentan un **6.
 │3. APLICACIÓN DE LA LÓGICA (REGLA DE NEGOCIOS)    │
 │   - Para cada transacción, verificar si cumple   │ 
 │     el criterio de fraccionamiento en 24h        │
-│   - Marcar como “fraccionada” o “no fraccionada” │
+│   - Crear la columna “windows_time”  donde si    |
+|     aparece almenos dos veces el mismo inicados  |
+|     es que fue fracionada, osea si el indicados  |
+|    1 aparece tres veces quiere decir que esa     |
+|     cuenta fue fracionada 3 veces en mesnoo      |
+|     de 24 horas                                  │
 └──────────────────────────────────────────────────┘
           │
           ▼
 ┌────────────────────────────────────────────────────────────────┐
 │4. GENERACIÓN DE ATRIBUTOS (FEATURES)                           │
-│   - Cálculo de transacciones fraccionadas por día de la semana │
+│   - Calculo de diferencia en horas y minutos por transaccion   │
 │   - Cálculo de montos promedios                                │
-│   - Otros features relevantes para los tableros de BI          │
-│     y ser utilizado por los equipos de riesgo                  │
+│   - identificacion de usuarios con mas de 2 transacciones      |
+|                     en menos de 24 horas                       |
+|   - Comportamiento de variables para esos clientes              │
 └────────────────────────────────────────────────────────────────┘
           │
           ▼
@@ -167,5 +172,5 @@ En esta parte se trabajo con el 60% de una de las bases, que reprecentan un **6.
 │  FIN DEL PROCESO  │
 └───────────────────┘
 ```
-ejemplo 
-![Flujo Modelo Analítico](./imagenes/flujo.png "Flujo Proceso")
+
+![Data flow](./imagenes/flujo.png "Flujo Proceso")
