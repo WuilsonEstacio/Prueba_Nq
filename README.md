@@ -293,3 +293,6 @@ Dado los hallazgos la frecuencia de actualizacion que se propone debe ser diaria
 #### Esta Grafica nos muestra el top 20 de las Subsidiary mas frecuentes donde observamos que la subsidiary 'f54e0b6b32831a6307361ed959903e76' tiene más de 214298 transacciones siendo la principal subsidiary
 ![Graficas](./imagenes/subsidiary1.png "Subsidiary")
 
+### Grafica top merchant 
+#### Esto nos muestra que el codigo unico del comercio o aliado que mas realiza transaciones es el **'817d18cd3c31e40e9bff0566baae7758'** y dentro de sus tipos de transaccion la mas frecuentada es la  tipo debito, tal como muestra la siguiente imagen
+![Graficas](./imagenes/merchant2.png "merchant2")
