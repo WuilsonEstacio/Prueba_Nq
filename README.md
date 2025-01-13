@@ -15,7 +15,7 @@ Este documento describe el proceso seguido para **explorar** los datos, **identi
    - [Hipótesis preliminares](#hipótesis-preliminares)
 6. [Flujo Modelo Analítico](#Flujo-Modelo-Analítico)  
    - [Data flow](#Data-flow)
-7. [Seleccion de modelo](#Seleccion-del-modelo)
+7. [Seleccion modelo](#Seleccion-modelo)
 8. [Conclusiones](#conclusiones)
    - [Implementación](#1-implementación)
    - [Trazabilidad](#2-trazabilidad)
@@ -164,12 +164,11 @@ En esta parte se trabajo con el 60% de una de las bases, que reprecentan un **6.
 └───────────────────┘
 ```
 ### Flujo Modelo Analitico
-
 ![Flujo Modelo Analítico](./imagenes/flujo.png "Flujo Modelo Analitico")
 
 ---
-
-## Seleccion de modelo
+---
+## Seleccion modelo
  El modelo analitico me tiene que identificar si hay n transacciones en el dia en una ventana de tiempo de 24 horas
 
 ```python
@@ -280,3 +279,4 @@ print('# Usuarios unicos que estan haciendo Fraccionamiento transaccional',df_fi
 df_filtered.show(truncate=False)
 ```
 ### Esta parte hasta aqui me genera los clientes que tienen mas de 2 transaciones en un corte de 24 horas desde que realizo la primera transaccion en ese dia
+---
