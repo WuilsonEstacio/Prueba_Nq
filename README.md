@@ -302,3 +302,11 @@ Dado los hallazgos la frecuencia de actualizacion que se propone debe ser diaria
 y para la grafica de Distribution of diff days tenemos que el area bajo la curva (AUC) es de 0.758, lo cual nos indica que hay una probabilidad de 0.758 de que una persona haga una tranasacion en aproximadamente 40 dias y que si hace una ese dia hay una probabilidad de un 5.78% de que realice una segunda transaccion y de que realice 3 o mas transacciones en un dia la probabilida es de 1.25% 
 ![Graficas](./imagenes/daily_transaction2.png "daily_transaction2")
 ![Graficas](./imagenes/daily_transaction.png "daily_transaction")
+
+### Grafica transaccion count 
+#### Esta grafica nos confirmaque las que la probabilidad de que un cliente realice mas de a 2 es de 1.25%
+![Graficas](./imagenes/transaccion_count.png "transaccion_count")
+
+### Grafica ejemplo fraccionamiento transacional 
+#### Esta grafica nos muestra un ejemplo de un usuario con una mala practica transacional, donde por ejemplo el usuario el dia 2021-02-05 realiza 13 transaciones que se muestran como 1 en la columna windows_time, tambien se muestra la diferencia de tiemo entre las transacciones y el monto de cada una de las transacciones, y de esas se muestra que todas son de tipo credit.
+![Graficas](./imagenes/ejfrancionamiento.png "ejfrancionamiento")
