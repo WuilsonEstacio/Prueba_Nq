@@ -178,7 +178,7 @@ En esta parte se trabajo con el 60% de una de las bases, que reprecentan un **6.
 dfu = dfu.withColumn("transaction_time", to_timestamp(col("transaction_date"), "yyyy-MM-dd HH:mm:ss"))
 dfu = dfu.orderBy("user_id", "transaction_time")
 ```
-# Calculo de las ventanas de tiempo y diferencia en horas entre transaciones
+""" Calculo de las ventanas de tiempo y diferencia en horas y minutos entre transacciones """
 ```python
 # === 1) Definir la columna 'day' ===
 dfu = dfu.withColumn("day", to_date(col("transaction_time")))
