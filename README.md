@@ -16,7 +16,8 @@ Este documento describe el proceso seguido para **explorar** los datos, **identi
 6. [Flujo Modelo Analítico](#Flujo-Modelo-Analítico)  
    - [Data flow](#Data-flow)
 7. [Seleccion modelo](#Seleccion-modelo)
-8. [Conclusiones](#conclusiones)
+   -[Frecuencia de actualizacion](#Frecuencia-de-actualizacion)
+9. [Conclusiones](#conclusiones)
    - [Implementación](#1-implementación)
    - [Trazabilidad](#2-trazabilidad)
    - [Monitoreo](#3-monitoreo)
@@ -169,7 +170,8 @@ En esta parte se trabajo con el 60% de una de las bases, que reprecentan un **6.
 ---
 ---
 ## Seleccion modelo
- El modelo analitico me tiene que identificar si hay n transacciones en el dia en una ventana de tiempo de 24 horas
+ El modelo analitico me tiene que identificar si hay n transacciones en el dia en una ventana de tiempo de 24 horas,
+ para que los encargados del tratamiento de estos casos se puedan hacer cargo de ello.
 
 ```python
 # Asegúrate de que la columna transaction_date esté en formato timestamp
@@ -279,4 +281,10 @@ print('# Usuarios unicos que estan haciendo Fraccionamiento transaccional',df_fi
 df_filtered.show(truncate=False)
 ```
 ### Esta parte hasta aqui me genera los clientes que tienen mas de 2 transaciones en un corte de 24 horas desde que realizo la primera transaccion en ese dia
+---
+
+---
+## Frecuencia de Actualización
+Dado los hallazgos la frecuencia de actualizacion que se propone debe ser diariamente y hora a hora, esto para poder determinar rapidamente quien esta iniciando a realizar fraccionamiento transaccional.  Como alternativa rapida se suguiere trabajar con Azure Synapses  dado que este es un servicio de analisis empresarial que acelera el tiempo para la optencion de informacion en tiempo real a demas de que  reune lo mejor de las tecnologias de SQL y de Spark.
+
 ---
